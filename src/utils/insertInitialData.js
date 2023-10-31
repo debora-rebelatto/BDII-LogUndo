@@ -17,14 +17,9 @@ async function insertInitialData() {
         metadado.table.b[i],
       ];
 
-      await client
-        .query(insertvalues, values)
-        .then((res) => console.log("Inserido com sucesso"))
-        .catch((err) => console.log(err));
+      await client.query(insertvalues, values).catch((err) => console.log(err));
     }
-
-    // Tudo ok? Então loga que os dados foram inseridos
-    console.log("Inseridos dados iniciais");
+    console.log("Inserido com sucesso");
   } catch (err) {
     console.log(err);
   }

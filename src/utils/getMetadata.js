@@ -4,7 +4,7 @@ async function getMetadata() {
   try {
     const selectquery = "SELECT * FROM metadado ORDER BY id";
 
-    const res = await client
+    await client
       .query(selectquery)
       .then((res) => {
         console.log(res.rows);

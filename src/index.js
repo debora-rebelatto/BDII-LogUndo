@@ -22,13 +22,13 @@ app.listen(port, () => {
 
 async function readLog() {
   try {
+    console.log("Inicia conexão com o banco de dados");
+    await client.connect();
+
     // Get all lines from the log file
     const lines = await getInputData();
-
-    console.log("Inicia conexão com o banco de dados");
     // await createDatabase();
-    await client.connect();
-    await createMetadadoTable(client);
+    await createMetadadoTable();
     await insertInitialData();
     await getMetadata();
 
@@ -39,10 +39,10 @@ async function readLog() {
       startCheckpoints,
       endCheckpoints,
       commits,
-    } = getLineValues(lines);
+    } = await getLineValues(lines);
 
     // Finds wich lines to undo
-    const whatToUndo = transactionsToUndo(
+    const whatToUndo = await transactionsToUndo(
       transactions,
       commits,
       startTransactions,
@@ -52,9 +52,6 @@ async function readLog() {
 
     // Insert the values in the database
     await insertTransactions(transactions.reverse(), whatToUndo);
-
-    // Log the metadata
-    await getMetadata();
   } catch (err) {
     console.log(err);
   }

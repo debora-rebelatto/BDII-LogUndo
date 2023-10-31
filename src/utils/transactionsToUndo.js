@@ -21,7 +21,6 @@ function transactionsToUndo(
     const isInEndCheckpoint = endCheckpoints.some(
       (endCheckpoint) => endCheckpoint.end
     );
-    console.log(transaction.transactionId);
 
     if (isInCommit) {
       return;
@@ -36,7 +35,6 @@ function transactionsToUndo(
       (isInStartTransition && !isInEndCheckpoint) ||
       (isInStartCheckpoint && !isInEndCheckpoint)
     ) {
-      console.log("return id");
       return transactionId;
     }
   });
