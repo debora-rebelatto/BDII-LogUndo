@@ -1,5 +1,17 @@
 # :notebook: BD II - Trabalho Prático de Log
 
+O termo "undo" em um log de banco de dados se refere a um registro ou um mecanismo que permite desfazer as operações de uma transação registrada no log. Em sistemas de gerenciamento de banco de dados (DBMS), o "undo" desempenha um papel fundamental na garantia da consistência e da durabilidade das transações.
+
+1. **Transações e Atomicidade**: Em um DBMS, as transações são unidades lógicas de trabalho que consistem em uma série de operações, como inserções, atualizações e exclusões de dados. A propriedade ACID (Atomicidade, Consistência, Isolamento e Durabilidade) garante que as transações sejam executadas de forma segura, mesmo em caso de falhas no sistema.
+
+2. **Undo Log**: Para garantir a atomicidade e a consistência das transações, os DBMS mantêm um registro chamado "undo log" (ou "log de desfazer"). Este log registra todas as modificações feitas no banco de dados como parte de uma transação. Essas modificações são registradas de forma reversa, o que significa que as ações necessárias para desfazer as alterações são registradas no log em ordem inversa. Isso permite que o sistema reverta as operações de uma transação se ocorrer uma falha.
+
+3. **Rollback**: Se uma transação não for concluída devido a uma falha ou erro, o sistema de banco de dados usa as informações no "undo log" para reverter as modificações que a transação havia feito até o ponto da falha. Isso é conhecido como um "rollback", e ele assegura que o banco de dados retorne a um estado consistente e estável.
+
+4. **Isolamento e Recuperação**: O "undo" também desempenha um papel importante na propriedade de Isolamento (a segunda letra do acrônimo ACID). Garante que outras transações em execução no banco de dados não vejam as modificações de uma transação que ainda não foi confirmada (commit). Isso permite que as transações ocorram isoladamente e não interfiram umas nas outras.
+
+Portanto, o "undo" em um log de banco de dados é uma parte crucial para garantir a consistência, a atomicidade e a capacidade de recuperação das transações em sistemas de gerenciamento de banco de dados.
+
 ## [:paperclip: Descrição da tarefa](https://docs.google.com/document/d/12ExZiKP9j_zXwnjbZfGA74m5fSXff2ErAOLCdfs0ye0/edit)
 
 Objetivo: implementar o mecanismo de log Undo com checkpoint usando o SGBD
@@ -75,6 +87,7 @@ Imprima as variáveis, exemplo:
 ## Detalhes
 
 Funções a serem implementadas:
+
 - [x] Carregar o banco de dados com a tabela antes de executar o código do log (para zerar as configurações e dados parciais). Notem que a tabela pode ter um número diferente de colunas e linhas.
 - [x] Carregar o arquivo de log;
 - [x] Verifique quais transações devem realizar UNDO. Imprimir o nome das transações que irão sofrer Undo.
