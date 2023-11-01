@@ -2,7 +2,6 @@ const express = require("express");
 const client = require("./database/db");
 
 const transactionsToUndo = require("./utils/transactionsToUndo");
-const createDatabase = require("./utils/createDatabase");
 const createMetadadoTable = require("./utils/createMetadadoTable");
 const insertInitialData = require("./utils/insertInitialData");
 const getMetadata = require("./utils/getMetadata");
@@ -25,9 +24,7 @@ async function readLog() {
     console.log("Inicia conexão com o banco de dados");
     await client.connect();
 
-    // Get all lines from the log file
     const lines = await getInputData();
-    // await createDatabase();
     await createMetadadoTable();
     await insertInitialData();
     await getMetadata();
@@ -39,10 +36,10 @@ async function readLog() {
       startCheckpoints,
       endCheckpoints,
       commits,
-    } = await getLineValues(lines);
+    } = getLineValues(lines);
 
     // Finds wich lines to undo
-    const whatToUndo = await transactionsToUndo(
+    const whatToUndo = transactionsToUndo(
       transactions,
       commits,
       startTransactions,
@@ -50,7 +47,6 @@ async function readLog() {
       endCheckpoints
     );
 
-    // Insert the values in the database
     await insertTransactions(transactions.reverse(), whatToUndo);
   } catch (err) {
     console.log(err);

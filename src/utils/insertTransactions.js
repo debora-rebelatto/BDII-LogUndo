@@ -1,12 +1,11 @@
 const client = require("../database/db");
-const getMetadata = require("./getMetadata");
 
 async function insertTransactions(transactions, whatToUndo) {
   await transactions.forEach(async (transaction) => {
     try {
       if (whatToUndo !== undefined) {
         let isUndo = whatToUndo.some((undo) => {
-          undo.transactionId === transaction.transactionId;
+          return undo.transactionId === transaction.transactionId;
         });
         if (isUndo) return;
       }
@@ -17,7 +16,6 @@ async function insertTransactions(transactions, whatToUndo) {
         .then((res) => res.rows[0])
         .catch((err) => console.log(err));
 
-      // Creates a query to insert the data
       const query = `UPDATE "metadado" SET "${transaction.columnName}" = $1 WHERE "id" = $2`;
 
       await client.query(query, [transaction.oldValue, transaction.tupleId]);

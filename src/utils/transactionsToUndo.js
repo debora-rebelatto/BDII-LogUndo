@@ -7,6 +7,7 @@ function transactionsToUndo(
 ) {
   const test = transactions.filter((transaction) => {
     const transactionId = transaction.transactionId;
+
     const isInCommit = commits.some(
       (commit) => commit.commmitId === transactionId
     );
@@ -19,7 +20,7 @@ function transactionsToUndo(
       (startCheckpoint) => startCheckpoint.start === transactionId
     );
     const isInEndCheckpoint = endCheckpoints.some(
-      (endCheckpoint) => endCheckpoint.end
+      (endCheckpoint) => endCheckpoint.end === transactionId
     );
 
     if (isInCommit) {
@@ -30,12 +31,16 @@ function transactionsToUndo(
       return;
     }
 
-    if (
-      (!isInCommit && !isInStartTransition && !isInStartCheckpoint) ||
-      (isInStartTransition && !isInEndCheckpoint) ||
-      (isInStartCheckpoint && !isInEndCheckpoint)
-    ) {
-      return transactionId;
+    if (!isInCommit && !isInStartTransition && !isInStartCheckpoint) {
+      return transaction.transactionId;
+    }
+
+    if (isInStartTransition && !isInEndCheckpoint) {
+      return transaction.transactionId;
+    }
+
+    if (isInStartCheckpoint && !isInEndCheckpoint) {
+      return transaction.transactionId;
     }
   });
   return test;

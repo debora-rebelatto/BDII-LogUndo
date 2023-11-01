@@ -2,7 +2,7 @@ const client = require("../database/db.js");
 
 async function createMetadadoTable() {
   try {
-    // Descomentar caso você não queira apagar tudo a cada execução
+    // Comentar caso você não queira apagar tudo a cada execução
     client.query("DROP TABLE IF EXISTS metadado");
 
     client
